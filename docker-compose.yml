@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  nginx:
+    build: docker/nginx
+    volumes:
+      - nginx_logs:/var/log/nginx
+      - static_volume:/home/app/notification_planning/static
+    ports:
+      - "80:80"  # api
+    depends_on:
+      - django_app
+
+  redis:
+    image: redis:6.2.6-alpine
+    expose:
+      - 6379
+    ports:
+      - "6379:6379"
+
+  postgres_db:
+    image: postgres:12.0-alpine
+    volumes:
+      - notification_postgres_data:/var/lib/postgresql/data/
+#    env_file:
+#      - docker/postgres/example.env
+    environment:
+      - POSTGRES_DB=notification_planning
+      - POSTGRES_USER=notification_planning
+      - POSTGRES_PASSWORD=notification_planning
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U notification_planning" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  django_app:
+    build:
+      context: .
+      dockerfile: docker/notification_planning/Dockerfile
+    command: >
+      sh -c 'python manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:8000'
+    volumes:
+      - static_volume:/home/app/notification_planning/static
+    expose:
+      - 8000
+    env_file:
+      - docker/notification_planning/example.env
+    depends_on:
+      - redis
+      - postgres_db
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: docker/notification_planning/Dockerfile
+    command: >
+      sh -c "python manage.py wait_migrations && celery -A core worker -l info"
+    env_file:
+      - docker/notification_planning/example.env
+    depends_on:
+      - django_app
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: docker/notification_planning/Dockerfile
+    command: >
+      sh -c "python manage.py wait_migrations && celery -A core beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+    env_file:
+      - docker/notification_planning/example.env
+    depends_on:
+      - django_app
+
+volumes:
+  nginx_logs:
+  static_volume:
+  notification_postgres_data:
