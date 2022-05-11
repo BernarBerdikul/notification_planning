@@ -12,6 +12,7 @@ services:
       - django_app
 
   redis:
+    container_name: redis_celery
     image: redis:6.2.6-alpine
     expose:
       - 6379
@@ -19,6 +20,7 @@ services:
       - "6379:6379"
 
   postgres_db:
+    container_name: postgres_db
     image: postgres:12.0-alpine
     volumes:
       - notification_postgres_data:/var/lib/postgresql/data/
@@ -39,40 +41,43 @@ services:
       retries: 5
 
   django_app:
+    container_name: notification_app
     build:
       context: .
       dockerfile: docker/notification_planning/Dockerfile
     command: >
-      sh -c 'python manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:8000'
+      sh -c 'python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:8000'
     volumes:
       - static_volume:/home/app/notification_planning/static
     expose:
       - 8000
     env_file:
-      - docker/notification_planning/example.env
+      - docker/notification_planning/.env
     depends_on:
       - redis
       - postgres_db
 
   celery_worker:
+    container_name: notification_worker
     build:
       context: .
       dockerfile: docker/notification_planning/Dockerfile
     command: >
-      sh -c "python manage.py wait_migrations && celery -A core worker -l info"
+      sh -c "celery -A config worker -l info"
     env_file:
-      - docker/notification_planning/example.env
+      - docker/notification_planning/.env
     depends_on:
       - django_app
 
   celery_beat:
+    container_name: notification_scheduler
     build:
       context: .
       dockerfile: docker/notification_planning/Dockerfile
     command: >
-      sh -c "python manage.py wait_migrations && celery -A core beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+      sh -c "celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler"
     env_file:
-      - docker/notification_planning/example.env
+      - docker/notification_planning/.env
     depends_on:
       - django_app
 
