@@ -1,5 +1,6 @@
-from typing import Iterator
+from typing import Iterator, List
 
+from notification.schemas import UserModel
 from notification.services import AbstractMailGenerator, FakerService, render_template
 
 __all__ = ('DummyMailGenerator',)
@@ -15,7 +16,7 @@ class DummyMailGenerator(AbstractMailGenerator):
         - тело письма.
         """
         my_faker: FakerService = FakerService()
-        users = my_faker.get_users()
+        users: List[UserModel] = my_faker.get_users()
         movies = my_faker.get_popular_movies()
         for user in users:
             rendered_subject: str = render_template(
@@ -26,7 +27,7 @@ class DummyMailGenerator(AbstractMailGenerator):
                 html_template=email_template.email_text,
                 context={'user': user, 'movies': movies},
             )
-            yield user, rendered_subject, rendered_body
+            yield user.email, rendered_subject, rendered_body
 
     def personal_film_selection(self) -> Iterator[tuple[str, str, str]]:
         return []

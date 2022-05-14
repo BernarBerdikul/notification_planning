@@ -1,5 +1,6 @@
 import requests
 from faker import Faker
+
 from notification.schemas import MovieModel, UserModel
 
 __all__ = ('FakerService',)
