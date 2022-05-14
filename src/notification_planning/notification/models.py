@@ -1,6 +1,5 @@
 from django.contrib.postgres.fields import JSONField
 from django.db import models
-from django_celery_results.models import TaskResult
 from django.utils import timezone
 
 
