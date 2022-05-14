@@ -19,7 +19,7 @@ RUN apt-get update && \
 # Fix права на выполнение (для пользователей unix систем)
 #RUN ["chmod", "+x", "entrypoint.dev.sh"]
 # Fix окончания строк (для пользователей win систем)
-RUN #dos2unix entrypoint.dev.sh
+# RUN dos2unix entrypoint.dev.sh
 
 # Проверка оформления кода
 RUN pip install --upgrade pip

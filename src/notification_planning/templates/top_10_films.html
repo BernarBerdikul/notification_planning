@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Привет {{user.first_name}}}</h1>
+  <h3>Мы подобрали для тебя список популярных фильмов на этой неделе</h3>
+  <br>
+  <p>Вот они с права на лево:</p>
+  <ul>
+    {% for movie in movies %}
+    <li>{{movie.title}}</li>
+    <li><img src="{{movie.image}}"></li>
+    {% endfor %}
+  </ul>
+  <h3>Спасибо что ты с нами</h3>
+{% endblock %}
