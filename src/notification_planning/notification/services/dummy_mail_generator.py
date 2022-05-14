@@ -20,14 +20,11 @@ class DummyMailGenerator(AbstractMailGenerator):
         for user in users:
             rendered_subject: str = render_template(
                 html_template=email_template.subject,
-                context={
-                    'user': user,
-                    'movies': movies,
-                },
+                context={'user': user},
             )
             rendered_body: str = render_template(
                 html_template=email_template.email_text,
-                context={'movies': movies},
+                context={'user': user, 'movies': movies},
             )
             yield user, rendered_subject, rendered_body
 

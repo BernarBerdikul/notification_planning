@@ -7,17 +7,19 @@ services:
       - nginx_logs:/var/log/nginx
       - static_volume:/home/app/notification_planning/static
     ports:
-      - "80:80"  # api
+      - "9000:80"
     depends_on:
       - django_app
+    networks:
+      - notification_planning_network
 
   redis:
     container_name: redis_celery
     image: redis:6.2.6-alpine
     expose:
       - 6379
-    ports:
-      - "6379:6379"
+    networks:
+      - notification_planning_network
 
   postgres_db:
     container_name: postgres_db
@@ -37,6 +39,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - notification_planning_network
 
   django_app:
     container_name: notification_app
@@ -56,6 +60,8 @@ services:
         condition: service_started
       redis:
         condition: service_started
+    networks:
+      - notification_planning_network
 
   celery_worker:
     container_name: notification_worker
@@ -69,6 +75,8 @@ services:
     depends_on:
       django_app:
         condition: service_started
+    networks:
+      - notification_planning_network
 
   celery_beat:
     container_name: notification_scheduler
@@ -82,6 +90,8 @@ services:
     depends_on:
       django_app:
         condition: service_started
+    networks:
+      - notification_planning_network
 
   flower:
     container_name: flower
@@ -94,8 +104,14 @@ services:
       - "5555:5555"
     env_file:
       - docker/notification_planning/example.env
+    networks:
+      - notification_planning_network
 
 volumes:
   nginx_logs:
   static_volume:
   notification_postgres_data:
+
+networks:
+  notification_planning_network:
+    driver: bridge

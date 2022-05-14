@@ -5,7 +5,6 @@ import logging
 from typing import Any
 
 from celery import shared_task
-from django.conf import settings
 from notification.models import EmailTemplate
 from notification.services import DummyMailGenerator, send_notify
 
@@ -20,8 +19,9 @@ def friday_top():
     email_template: EmailTemplate = EmailTemplate.objects.filter(
         mail_type='selection_movies',
     ).first()
-    for user, rendered_subject, rendered_body in \
-            settings.mail_generator.weekly_top_movies(email_template):
+    for user, rendered_subject, rendered_body in mail_generator.weekly_top_movies(
+            email_template,
+    ):
         data: dict[str, Any] = {
             'recipient': user.email,
             'subject': rendered_subject,
