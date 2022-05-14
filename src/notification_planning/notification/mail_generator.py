@@ -1,4 +1,11 @@
 import abc
+from collections import namedtuple
+from typing import Iterator, Tuple
+
+from jinja2 import Template
+
+from notification.models import EmailTemplate
+
 
 class AbstractMailGenerator:
     @abc.abstractmethod
@@ -25,17 +32,6 @@ class AbstractMailGenerator:
 # environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 # setup()
 
-from notification.models import EmailTemplate
-
-template = EmailTemplate.objects.filter(mail_type="welcome_letter").first()
-a = 9
-from collections import namedtuple
-
-a = 7
-
-from jinja2 import Template
-from typing import Iterator, Tuple
-
 
 def get_users():
     User = namedtuple('User', 'email name lastname')
@@ -47,6 +43,7 @@ def get_users():
         users.append(User(email, name, last))
     return users
 
+
 def get_films():
     Film = namedtuple('Film', 'title url')
     films = []
@@ -55,8 +52,6 @@ def get_films():
         url = f"Kinoteatr.ru/movies/iron_man/{i}"
         films.append(Film(title, url))
     return films
-
-
 
 
 class DummyMailGenerator(AbstractMailGenerator):
@@ -73,7 +68,6 @@ class DummyMailGenerator(AbstractMailGenerator):
             html = template.render(user=user, films=films)
             yield recipient, html
 
-
     def latest_new_movies(self) -> dict:
         # """Загрузить состояние локально из постоянного хранилища"""
         users = get_users()
@@ -84,7 +78,6 @@ class DummyMailGenerator(AbstractMailGenerator):
             html = template.render(user=user, films=films)
             yield recipient, html
 
-
     # def movie_watch_statistic(self) -> dict:
     #     # """Загрузить состояние локально из постоянного хранилища"""
     #     users = get_users()
@@ -94,6 +87,3 @@ class DummyMailGenerator(AbstractMailGenerator):
     #         recipient = user.email
     #         html = template.render(user=user, films=films)
     #         yield recipient, html
-
-
-

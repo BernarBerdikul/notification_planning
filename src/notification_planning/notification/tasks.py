@@ -1,22 +1,9 @@
-from os import path, environ
-from sys import path as sys_path
-from django import setup
 
-sys_path.append("/config/settings.py")
-environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
-setup()
-# import json
 import logging
-# from datetime import datetime
 
-from celery import shared_task, states
-# from django.conf import settings
-# from django.contrib.auth.models import User
-# from django.core.mail import send_mail
-# from django_celery_results.models import TaskResult
-#
+from celery import shared_task
+
 from notification.models import EmailTemplate
-from notification.utils import format_email_body
 from notification.mail_generator import DummyMailGenerator
 import requests
 
