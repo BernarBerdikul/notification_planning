@@ -14,7 +14,7 @@ class TemplateCodes(models.TextChoices):
 class NotifyChannel(models.TextChoices):
     """Каналы уведомлений."""
 
-    email = 'email', 'Почта'
+    email = 'email', 'Email'
     websocket = 'websocket', 'Websocket'
     web_push = 'web_push', 'Push уведомление'
 
