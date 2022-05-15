@@ -1,6 +1,5 @@
 import requests
 from faker import Faker
-
 from notification.schemas import MovieModel, UserModel
 
 __all__ = ('FakerService',)
@@ -16,8 +15,7 @@ class FakerService:
         """Возвращает сгенерированных фейковых пользователей."""
         return [
             UserModel(
-                first_name=self.fake.first_name(),
-                last_name=self.fake.last_name(),
+                username=self.fake.user_name(),
                 email=self.fake.email(),
             )
             for _ in range(self.count)

@@ -4,6 +4,5 @@ __all__ = ('UserModel',)
 
 
 class UserModel(FastJsonModel):
-    first_name: str
-    last_name: str
+    username: str
     email: str

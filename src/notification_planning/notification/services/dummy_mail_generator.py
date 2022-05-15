@@ -1,7 +1,11 @@
-from typing import Iterator, List
+from typing import Iterator
 
 from notification.schemas import UserModel
-from notification.services import AbstractMessageGenerator, FakerService, render_template
+from notification.services import (
+    AbstractMessageGenerator,
+    FakerService,
+    render_template,
+)
 
 __all__ = ('DummyMailGenerator',)
 
@@ -11,12 +15,12 @@ class DummyMailGenerator(AbstractMessageGenerator):
     def weekly_top_movies(self, email_template) -> Iterator[tuple[str, str, str]]:
         """
         В зависимости от письма, возвращает в виде генератора данные:
-        - инфо о пользователе;
+        - электронную почту пользователя;
         - заголовок письма;
         - тело письма.
         """
         my_faker: FakerService = FakerService()
-        users: List[UserModel] = my_faker.get_users()
+        users: list[UserModel] = my_faker.get_users()
         movies = my_faker.get_popular_movies()
         for user in users:
             rendered_subject: str = render_template(

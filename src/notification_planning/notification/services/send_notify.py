@@ -1,7 +1,6 @@
 from typing import Any
 
 import requests
-
 from config.settings import NOTIFICATION_SERVICE_URL
 from notification.schemas import BodyModel
 

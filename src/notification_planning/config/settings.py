@@ -98,10 +98,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# NOTIFICATION SERVICE
-NOTIFICATION_SERVICE_URL: str = os.getenv(
-    'NOTIFICATION_SERVICE_URL', 'http://localhost',
+# AUTH SERVICE
+AUTH_SERVICE_URL: str = os.getenv('AUTH_SERVICE_URL')
+AUTH_SERVICE_PATH_USERS: str = os.getenv(
+    'AUTH_SERVICE_PATH_USERS', '/api/users',
 )
+
+# NOTIFICATION SERVICE
+NOTIFICATION_SERVICE_URL: str = os.getenv('NOTIFICATION_SERVICE_URL')
 NOTIFICATION_SERVICE_PATH_EMAIL: str = os.getenv(
     'NOTIFICATION_SERVICE_PATH_EMAIL', '/api/v1/send/email',
 )
