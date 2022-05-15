@@ -1,13 +1,13 @@
 from typing import Iterator
 
-from notification.services.abstract_message_generator import AbstractMessageGenerator
+from notification.services import AbstractMessageGenerator
 
-__all__ = ('MailGenerator',)
+__all__ = ('WebsocketGenerator',)
 
 
-class MailGenerator(AbstractMessageGenerator):
+class WebsocketGenerator(AbstractMessageGenerator):
 
-    def weekly_top_movies(self, email_template) -> Iterator[tuple[str, str, str]]:
+    def weekly_top_movies(self, websocket_template) -> Iterator[tuple[str, str, str]]:
         ...
 
     def personal_film_selection(self) -> Iterator[tuple[str, str, str]]:

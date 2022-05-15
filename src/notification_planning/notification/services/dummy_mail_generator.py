@@ -1,12 +1,12 @@
 from typing import Iterator, List
 
 from notification.schemas import UserModel
-from notification.services import AbstractMailGenerator, FakerService, render_template
+from notification.services import AbstractMessageGenerator, FakerService, render_template
 
 __all__ = ('DummyMailGenerator',)
 
 
-class DummyMailGenerator(AbstractMailGenerator):
+class DummyMailGenerator(AbstractMessageGenerator):
 
     def weekly_top_movies(self, email_template) -> Iterator[tuple[str, str, str]]:
         """

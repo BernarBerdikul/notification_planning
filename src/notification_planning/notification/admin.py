@@ -1,10 +1,11 @@
 from django.contrib import admin
-from notification.models import EmailTemplate
+
+from notification.models import MessageTemplate
 
 
-@admin.register(EmailTemplate)
-class EmailTemplateAdmin(admin.ModelAdmin):
-    """Админка для модели EmailTemplate."""
+@admin.register(MessageTemplate)
+class MessageTemplateAdmin(admin.ModelAdmin):
+    """Админка для модели MessageTemplate."""
     list_display = (
         'id', 'title', 'mail_type',
         'is_send_immediately', 'is_log_it',

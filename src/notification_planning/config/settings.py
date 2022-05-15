@@ -102,6 +102,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 NOTIFICATION_SERVICE_URL: str = os.getenv(
     'NOTIFICATION_SERVICE_URL', 'http://localhost',
 )
+NOTIFICATION_SERVICE_PATH_EMAIL: str = os.getenv(
+    'NOTIFICATION_SERVICE_PATH_EMAIL', '/api/v1/send/email',
+)
+NOTIFICATION_SERVICE_PATH_WEBSOCKET: str = os.getenv(
+    'NOTIFICATION_SERVICE_PATH_WEBSOCKET', '/api/v1/send/websocket',
+)
+NOTIFICATION_SERVICE_PATH_WEBPUSH: str = os.getenv(
+    'NOTIFICATION_SERVICE_PATH_WEBPUSH', '/api/v1/send/web-push',
+)
 NOTIFICATION_TTL: int = int(os.environ.get('NOTIFICATION_TTL', default=86400))
 NOTIFICATION_IMMEDIATELY: bool = False
 NOTIFICATION_LOG_IT: bool = False

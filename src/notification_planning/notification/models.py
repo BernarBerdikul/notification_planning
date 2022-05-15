@@ -11,8 +11,16 @@ class TemplateCodes(models.TextChoices):
     user_statistic = 'user_statistic', 'Статистика просмотров пользователя'
 
 
-class EmailTemplate(models.Model):
-    """Модель для хранения шаблона письма."""
+class NotifyChannel(models.TextChoices):
+    """Каналы уведомлений."""
+
+    email = 'email', 'Почта'
+    websocket = 'websocket', 'Websocket'
+    web_push = 'web_push', 'Push уведомление'
+
+
+class MessageTemplate(models.Model):
+    """Модель для хранения шаблона сообщения."""
 
     title = models.CharField(
         verbose_name='Наименование', max_length=250,
@@ -20,6 +28,11 @@ class EmailTemplate(models.Model):
     mail_type = models.CharField(
         verbose_name='Тип сообщения',
         choices=TemplateCodes.choices,
+        max_length=50, unique=True,
+    )
+    channel = models.CharField(
+        verbose_name='Канал уведомления',
+        choices=NotifyChannel.choices,
         max_length=50, unique=True,
     )
     subject = models.TextField(
@@ -38,7 +51,7 @@ class EmailTemplate(models.Model):
     created_at = models.DateTimeField(editable=False)
     updated_at = models.DateTimeField(editable=False)
 
-    def save(self, *args, **kwargs) -> 'EmailTemplate':
+    def save(self, *args, **kwargs) -> 'MessageTemplate':
         """Сохраннение экземпляра."""
         if not self.pk:
             self.created_at = timezone.now()
@@ -49,4 +62,4 @@ class EmailTemplate(models.Model):
         return f'{self.pk}: {self.mail_type} - {self.subject}'
 
     class Meta:
-        db_table = 'email_templates'
+        db_table = 'message_templates'
