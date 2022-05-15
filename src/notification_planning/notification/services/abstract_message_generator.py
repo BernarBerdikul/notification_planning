@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import Iterator, Optional
 
-__all__ = ('AbstractMailGenerator', 'mail_generator', 'get_mail_generator')
+__all__ = ('AbstractMessageGenerator', 'message_generator', 'get_message_generator')
 
 
-class AbstractMailGenerator(ABC):
+class AbstractMessageGenerator(ABC):
 
     @abstractmethod
-    def weekly_top_movies(self, email_template) -> Iterator[tuple[str, str, str]]:
+    def weekly_top_movies(self, message_template) -> Iterator[tuple[str, str, str]]:
         pass
 
     @abstractmethod
@@ -23,8 +23,8 @@ class AbstractMailGenerator(ABC):
         pass
 
 
-mail_generator: Optional[AbstractMailGenerator] = None
+message_generator: Optional[AbstractMessageGenerator] = None
 
 
-def get_mail_generator() -> AbstractMailGenerator:
-    return mail_generator
+def get_message_generator() -> AbstractMessageGenerator:
+    return message_generator

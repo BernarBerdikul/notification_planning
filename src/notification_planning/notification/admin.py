@@ -1,12 +1,13 @@
 from django.contrib import admin
-from notification.models import EmailTemplate
+
+from notification.models import MessageTemplate
 
 
-@admin.register(EmailTemplate)
-class EmailTemplateAdmin(admin.ModelAdmin):
-    """Админка для модели EmailTemplate."""
+@admin.register(MessageTemplate)
+class MessageTemplateAdmin(admin.ModelAdmin):
+    """Админка для модели MessageTemplate."""
     list_display = (
-        'id', 'title', 'mail_type',
+        'id', 'title', 'mail_type', 'channel',
         'is_send_immediately', 'is_log_it',
         'created_at', 'updated_at',
     )
@@ -15,11 +16,12 @@ class EmailTemplateAdmin(admin.ModelAdmin):
     )
     list_filter = (
         'mail_type',
+        'channel',
         'is_send_immediately',
         'is_log_it',
     )
     fields = (
-        'title', 'mail_type',
+        'title', 'mail_type', 'channel',
         'subject', 'email_text',
         'is_send_immediately', 'is_log_it',
     )

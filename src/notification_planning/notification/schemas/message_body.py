@@ -3,10 +3,10 @@ from typing import Optional
 from config import settings
 from notification.schemas import FastJsonModel
 
-__all__ = ('EmailBodyModel',)
+__all__ = ('BodyModel',)
 
 
-class EmailBodyModel(FastJsonModel):
+class BodyModel(FastJsonModel):
     recipient: str
     subject: str
     body: str
